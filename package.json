@@ -1,0 +1,28 @@
+{
+    "name": "graph_rest_base",
+    "version": "1.0.0",
+    "description": "Codigo base para una aplicación backend con GraphQl y API Rest.",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon app/index.js",
+        "start": "node app/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/TonyLuque/graph_rest_base.git"
+    },
+    "author": "anthony luque",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/TonyLuque/graph_rest_base/issues"
+    },
+    "homepage": "https://github.com/TonyLuque/graph_rest_base#readme",
+    "dependencies": {
+        "apollo-server": "^3.7.0",
+        "graphql": "^16.5.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.16"
+    }
+}
