@@ -8,6 +8,9 @@ const path = require("path");
 const app = express();
 const httpServer = http.createServer(app);
 
+require("dotenv").config();
+const PORT = process.env.PORT;
+
 const auth = require("./auth/Routes");
 const { getUserId } = require("./auth/auth");
 
@@ -54,8 +57,10 @@ async function startApolloServer(typeDefs, resolvers) {
     path: "/graphql",
   });
 
-  await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+  await new Promise((resolve) => httpServer.listen({ port: PORT }, resolve));
+  console.log(
+    `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+  );
 }
 
 startApolloServer(typeDefs, resolvers);
