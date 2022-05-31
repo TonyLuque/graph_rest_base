@@ -11,6 +11,8 @@ const httpServer = http.createServer(app);
 require("dotenv").config();
 const PORT = process.env.PORT;
 
+require("./database");
+
 const auth = require("./auth/Routes");
 const { getUserId } = require("./auth/auth");
 

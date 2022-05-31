@@ -2,6 +2,10 @@ type Profile {
   id: ID!
   nickname: String!
   birthday: String!
+  firstName: String!
+  lastname: String!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {

@@ -1,8 +1,11 @@
 type User {
   id: ID!
-  name: String!
-  lastname: String!
   email: String!
+  password: String!
+  role: String!
+  profile: Profile
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {
