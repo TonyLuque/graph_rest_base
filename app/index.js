@@ -1,41 +1,61 @@
-const { ApolloServer, gql } = require("apollo-server");
+const { ApolloServer } = require("apollo-server-express");
+const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
+const express = require("express");
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
 
-const typeDefs = gql`
-    type User {
-        name: String
-        email: String
-    }
+const app = express();
+const httpServer = http.createServer(app);
 
-    type Query {
-        user: User
-        users: [User]
-    }
-`;
+const auth = require("./auth/Routes");
+const { getUserId } = require("./auth/auth");
 
-const users = [
-    {
-        name: "july",
-        email: "july@falso.com",
-    },
-    {
-        name: "tony",
-        email: "tony@falso.com",
-    },
-];
+app.use("/user", auth);
+
+const userQuery = require("./users/Query");
+const userMutation = require("./users/Mutation");
+const profileQuery = require("./profiles/Query");
 
 const resolvers = {
-    Query: {
-        user: () => users[0],
-        users: () => users,
-    },
+  Query: {
+    ...userQuery,
+    ...profileQuery,
+  },
+
+  Mutation: {
+    ...userMutation,
+  },
+  // Subscription,
 };
 
-const server = new ApolloServer({
+const typeDefs = [
+  fs.readFileSync(path.join(__dirname, "./users/schema.graphql"), "utf8"),
+  fs.readFileSync(path.join(__dirname, "./profiles/schema.graphql"), "utf8"),
+];
+
+async function startApolloServer(typeDefs, resolvers) {
+  const server = new ApolloServer({
     typeDefs,
     resolvers,
     csrfPrevention: true,
-});
-server
-    .listen()
-    .then(({ url }) => console.log(`Server run at ${url}`))
-    .catch((e) => console.error(e));
+    context: ({ req }) => {
+      return {
+        ...req,
+        userId: req && req.headers.authorization ? getUserId(req) : null,
+      };
+    },
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
+
+  await server.start();
+  server.applyMiddleware({
+    app,
+    path: "/graphql",
+  });
+
+  await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+}
+
+startApolloServer(typeDefs, resolvers);

@@ -1,0 +1,9 @@
+type Profile {
+  id: ID!
+  nickname: String!
+  birthday: String!
+}
+
+type Query {
+  profile: Profile
+}
