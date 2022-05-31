@@ -1,3 +1,5 @@
+const User = require("./model");
+
 const dataUsers = [
   {
     id: "1",
@@ -30,8 +32,13 @@ function user(parent, args, context, info) {
   return dataUsers[0];
 }
 
-function users(parent, args, context, info) {
-  return dataUsers;
+async function users(parent, args, context, info) {
+  try {
+    const users = await User.getAll();
+    return users;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 module.exports = {
