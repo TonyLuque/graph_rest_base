@@ -22,6 +22,8 @@ const userQuery = require("./users/Query");
 const userMutation = require("./users/Mutation");
 const profileQuery = require("./profiles/Query");
 
+const User = require("./users/User");
+
 const resolvers = {
   Query: {
     ...userQuery,
@@ -31,10 +33,13 @@ const resolvers = {
   Mutation: {
     ...userMutation,
   },
+  User,
+
   // Subscription,
 };
 
 const typeDefs = [
+  fs.readFileSync(path.join(__dirname, "./schma.graphql"), "utf8"),
   fs.readFileSync(path.join(__dirname, "./users/schema.graphql"), "utf8"),
   fs.readFileSync(path.join(__dirname, "./profiles/schema.graphql"), "utf8"),
 ];

@@ -1,4 +1,5 @@
 const User = require("./model");
+const ErrorHandler = require("../utils/ErrorHandler");
 
 const dataUsers = [
   {
@@ -34,10 +35,31 @@ function user(parent, args, context, info) {
 
 async function users(parent, args, context, info) {
   try {
-    const users = await User.getAll();
-    return users;
+    const users = await User.getAll({ name: "o" });
+    if (users) {
+      return {
+        code: 200,
+        success: true,
+        message: ``,
+        data: users,
+      };
+    } else {
+      return {
+        code: 204,
+        success: true,
+        message: `There is not users`,
+        data: [],
+      };
+    }
   } catch (error) {
-    console.error(error);
+    return ErrorHandler.graphQlError({
+      error: error,
+      message: "get all users",
+      functionName: "users",
+      fileName: "Query.js",
+      moduleName: "users",
+      typeDataResponse: [],
+    });
   }
 }
 

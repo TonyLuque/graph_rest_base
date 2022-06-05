@@ -1,7 +1,28 @@
 class ErrorHandler {
   constructor() {}
 
-  static GraphQlError({
+  static graphQlError({
+    error,
+    message,
+    functionName,
+    fileName,
+    moduleName,
+    typeDataResponse,
+  }) {
+    console.error(
+      `Error ${message} [${functionName} - ${fileName} - ${moduleName}] |`,
+      error
+    );
+
+    return {
+      code: 500,
+      success: false,
+      message: `Error ${message}`,
+      data: typeDataResponse,
+    };
+  }
+
+  static restError({
     error,
     message,
     functionName,
@@ -18,3 +39,4 @@ class ErrorHandler {
     }
   }
 }
+module.exports = ErrorHandler;
