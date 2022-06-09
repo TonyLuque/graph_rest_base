@@ -8,17 +8,24 @@ type User {
 }
 
 type Query {
-  user: User
-  users: UserResponse
+  user(id: ID!): UserResponse
+  users: UsersResponse
 }
 
 type Mutation {
   oa: String
 }
 
-type UserResponse implements GeneralResponse {
+type UsersResponse implements GeneralResponse {
   code: String!
   success: Boolean!
   message: String!
   data: [User!]
+}
+
+type UserResponse implements GeneralResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  data: User!
 }

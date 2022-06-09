@@ -1,9 +1,7 @@
 const Profile = require("./model");
 
-function profile(parent, args, context) {
-  return {
-    nickname: "oa porolas",
-  };
+async function profile(parent, args, context) {
+  return await Profile.findById(parent.id);
 }
 
 module.exports = {
