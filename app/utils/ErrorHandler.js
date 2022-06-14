@@ -31,7 +31,8 @@ class ErrorHandler {
     res,
   }) {
     console.error(
-      `Error ${message} [${functionName} - ${fileName} - ${moduleName}] | ${error}`
+      `Error ${message} [${functionName} - ${fileName} - ${moduleName}] |`,
+      error
     );
 
     if (res) {

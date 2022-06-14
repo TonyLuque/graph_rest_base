@@ -37,7 +37,7 @@ router.post("/signup", async function (req, res) {
     ErrorHandler.restError({
       error: error,
       message: "Something was wrong",
-      functionName: "singup",
+      functionName: "signup",
       fileName: "Routes.js",
       moduleName: "auth",
       res: res,
@@ -48,7 +48,6 @@ router.post("/signup", async function (req, res) {
 router.post("/login", async function (req, res) {
   try {
     const { email, password } = req.body;
-
     const user = await User.findOne({
       email: email,
     });
@@ -77,7 +76,7 @@ router.post("/login", async function (req, res) {
 });
 // define the about route
 router.post("/resetPassword", function (req, res) {
-  res.send("nueva cotraseña");
+  res.send("nueva contraseña");
 });
 
 module.exports = router;

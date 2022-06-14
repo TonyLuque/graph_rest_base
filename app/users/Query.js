@@ -2,6 +2,7 @@ const User = require("./model");
 const ErrorHandler = require("../utils/ErrorHandler");
 
 async function user(parent, args, context, info) {
+  const { user } = context;
   try {
     const user = await User.get({ _id: args.id });
     if (user) {
@@ -33,7 +34,9 @@ async function user(parent, args, context, info) {
 
 async function users(parent, args, context, info) {
   try {
-    const users = await User.getAll({ name: "o" });
+    const { user } = context;
+
+    const users = await User.getAll({});
     if (users) {
       return {
         code: 200,

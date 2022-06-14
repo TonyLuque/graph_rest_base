@@ -1,11 +1,14 @@
 const jwt = require("jsonwebtoken");
+const ErrorHandler = require("../utils/ErrorHandler");
 const APP_SECRET = process.env.APP_SECRET;
+
+const User = require("../users/model");
 
 function getTokenPayload(token) {
   return jwt.verify(token, APP_SECRET);
 }
 
-function getUserId(req, authToken) {
+async function getUserId(req, authToken) {
   if (req) {
     const authHeader = req.headers.authorization;
     if (authHeader) {
@@ -14,11 +17,13 @@ function getUserId(req, authToken) {
         throw new Error("No token found");
       }
       const { userId } = getTokenPayload(token);
-      return userId;
+      const user = await User.findById(userId, "-password");
+      return user;
     }
   } else if (authToken) {
     const { userId } = getTokenPayload(authToken);
-    return userId;
+    const user = await User.findById(userId, "-password");
+    return user;
   }
 
   throw new Error("Not authenticated");

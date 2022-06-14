@@ -1,6 +1,7 @@
-const { ApolloServer } = require("apollo-server-express");
+const { ApolloServer, AuthenticationError } = require("apollo-server-express");
 const { ApolloServerPluginDrainHttpServer } = require("apollo-server-core");
 const express = require("express");
+const bodyParser = require("body-parser");
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -15,6 +16,9 @@ require("./database");
 
 const auth = require("./auth/Routes");
 const { getUserId } = require("./auth/auth");
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use("/user", auth);
 
@@ -39,7 +43,7 @@ const resolvers = {
 };
 
 const typeDefs = [
-  fs.readFileSync(path.join(__dirname, "./schma.graphql"), "utf8"),
+  fs.readFileSync(path.join(__dirname, "./schema.graphql"), "utf8"),
   fs.readFileSync(path.join(__dirname, "./users/schema.graphql"), "utf8"),
   fs.readFileSync(path.join(__dirname, "./profiles/schema.graphql"), "utf8"),
 ];
@@ -49,11 +53,22 @@ async function startApolloServer(typeDefs, resolvers) {
     typeDefs,
     resolvers,
     csrfPrevention: true,
-    context: ({ req }) => {
-      return {
-        ...req,
-        userId: req && req.headers.authorization ? getUserId(req) : null,
-      };
+    context: async ({ req }) => {
+      try {
+        // get the user token from the headers
+        const token = req.headers.authorization || "";
+
+        // try to retrieve a user with the token
+        const user = await getUserId(req, token);
+
+        // optionally block the user
+        // we could also check user roles/permissions here
+        if (!user) throw new AuthenticationError("you must be logged in");
+        // add the user to the context
+        return { user };
+      } catch (error) {
+        throw new AuthenticationError(error);
+      }
     },
     plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
