@@ -24,7 +24,7 @@ async function sendSMS({
       error: error,
       message: "Error to send SMS",
       functionName: "sendSMS",
-      fileName: "twilio.js",
+      fileName: "SMS.js",
       moduleName: "utils",
     });
   }

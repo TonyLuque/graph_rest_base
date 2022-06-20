@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/TonyLuque/graph_rest_base#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "apollo-server-core": "^3.8.1",
     "apollo-server-express": "^3.8.1",
     "bcryptjs": "^2.4.3",
