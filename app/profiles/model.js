@@ -1,16 +1,18 @@
 const mongoose = require("mongoose");
 
-const ProfleSchema = new mongoose.Schema(
+const ProfileSchema = new mongoose.Schema(
   {
     nickname: { type: String, required: false, unique: true },
     birthday: { type: Date, required: false, default: null },
     firstName: { type: String, required: false, default: null },
-    lastname: { type: String, required: false, default: null },
+    lastName: { type: String, required: false, default: null },
+    countryCode: { type: String, required: false, default: null },
+    phoneNumber: { type: String, required: false, default: null },
   },
   { timestamps: true }
 );
 
-ProfleSchema.static({
+ProfileSchema.static({
   create: async function (data) {
     try {
       const profile = new this(data);
@@ -30,4 +32,4 @@ ProfleSchema.static({
   },
 });
 
-module.exports = mongoose.model("Profile", ProfleSchema);
+module.exports = mongoose.model("Profile", ProfileSchema);

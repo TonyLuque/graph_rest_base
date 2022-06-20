@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { APP_SECRET } = require("../auth/auth");
 const ErrorHandler = require("../utils/ErrorHandler");
+const twilio = require("../utils/twilio");
 
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
@@ -50,7 +51,7 @@ router.post("/login", async function (req, res) {
     const { email, password } = req.body;
     const user = await User.findOne({
       email: email,
-    });
+    }).populate("profile");
     if (!user) {
       throw new Error("User found");
     }
@@ -63,6 +64,15 @@ router.post("/login", async function (req, res) {
     const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
     res.status(200).json(token);
+
+    if (user.profile.countryCode && user.profile.phoneNumber) {
+      const userName = user.profile.firstName ? user.profile.firstName : "";
+      const sms = await twilio.sendSMS({
+        toPhoneNumber: user.profile.phoneNumber,
+        countryCode: user.profile.countryCode,
+        body: `Hola ${userName} has iniciado sesión, si no fuiste tú contacta con servicio al cliente`,
+      });
+    }
   } catch (error) {
     ErrorHandler.restError({
       error: error,

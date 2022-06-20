@@ -1,6 +1,14 @@
 class ErrorHandler {
   constructor() {}
 
+  static logError({ error, message, functionName, fileName, moduleName }) {
+    console.error(
+      `Error ${message} [${functionName} - ${fileName} - ${moduleName}] |`,
+      error
+    );
+    return;
+  }
+
   static graphQlError({
     error,
     message,
