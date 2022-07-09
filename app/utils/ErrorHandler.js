@@ -44,7 +44,7 @@ class ErrorHandler {
     );
 
     if (res) {
-      res.status(500).json(`Error ${message}`);
+      res.status(500).json(`${message}`);
     }
   }
 }

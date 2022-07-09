@@ -20,22 +20,23 @@
   "homepage": "https://github.com/TonyLuque/graph_rest_base#readme",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
-    "apollo-server-core": "^3.8.1",
-    "apollo-server-express": "^3.8.1",
+    "apollo-server-core": "^3.9.0",
+    "apollo-server-express": "^3.9.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "firebase-admin": "^11.0.0",
     "graphql": "^16.5.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.3.5",
+    "mongoose": "^6.4.0",
     "twilio": "^3.77.3"
   },
   "devDependencies": {
-    "eslint": "^8.6.0",
-    "eslint-config-prettier": "^8.3.0",
+    "eslint": "^8.18.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "nodemon": "^2.0.16",
-    "prettier": "^2.5.1"
+    "nodemon": "^1.3.3",
+    "prettier": "^2.7.1"
   }
 }

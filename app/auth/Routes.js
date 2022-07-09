@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const { APP_SECRET } = require("../auth/auth");
 const ErrorHandler = require("../utils/ErrorHandler");
 const SMS = require("../utils/SMS");
+const { push } = require("../utils/PushNotifications");
 
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
@@ -48,7 +49,9 @@ router.post("/signup", async function (req, res) {
 
 router.post("/login", async function (req, res) {
   try {
-    const { email, password } = req.body;
+    const { email, password, deviceId } = req.body;
+    console.log(req.body);
+
     const user = await User.findOne({
       email: email,
     }).populate("profile");
@@ -64,6 +67,10 @@ router.post("/login", async function (req, res) {
     const token = jwt.sign({ userId: user.id }, APP_SECRET);
 
     res.status(200).json(token);
+
+    if (deviceId) {
+      await User.findByIdAndUpdate(user._id, { userDeviceId: deviceId });
+    }
 
     if (user.profile.countryCode && user.profile.phoneNumber) {
       const userName = user.profile.firstName ? user.profile.firstName : "";
@@ -87,6 +94,16 @@ router.post("/login", async function (req, res) {
 // define the about route
 router.post("/resetPassword", function (req, res) {
   res.send("nueva contraseña");
+});
+// define the about route
+router.post("/push", async function (req, res) {
+  const { title, body, userDeviceId } = req.body;
+  const result = await push({
+    title: title,
+    body: body,
+    userDeviceId: userDeviceId,
+  });
+  res.status(200).json(result ? result : "Push not delivery");
 });
 
 module.exports = router;

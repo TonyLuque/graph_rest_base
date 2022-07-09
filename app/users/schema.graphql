@@ -3,6 +3,7 @@ type User {
   email: String!
   role: String!
   profile: Profile
+  userDeviceId: String
   createdAt: String!
   updatedAt: String!
 }
