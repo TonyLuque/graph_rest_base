@@ -11,23 +11,15 @@ admin.initializeApp({
 
 exports.push = async function ({ title, body, userDeviceId }) {
   try {
-    const payload = {
+    const message = {
       notification: {
         title: title,
         body: body,
-      },
-      apns: {
-        payload: {
-          aps: { sound: "default" },
-        },
-      },
-      data: {
-        title: title,
-        body: body,
+        image: "",
       },
       token: userDeviceId,
     };
-    let pushSend = await admin.messaging().send(payload);
+    let pushSend = await admin.messaging().send(message);
     console.log(pushSend);
     return pushSend;
   } catch (error) {
