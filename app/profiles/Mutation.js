@@ -1,11 +1,9 @@
 const Profile = require("../profiles/model");
 const ErrorHandler = require("../utils/ErrorHandler");
 
-async function profile(parent, args, context, info) {
+async function updateProfile(parent, args, context, info) {
   try {
-    const { id: profileId } = args;
-    const profile = await Profile.get({ _id: profileId });
-
+    const profile = await Profile.updateById(args.id, ...args);
     if (profile) {
       return {
         code: 200,
@@ -24,9 +22,9 @@ async function profile(parent, args, context, info) {
   } catch (error) {
     return ErrorHandler.graphQlError({
       error: error,
-      message: "get a profile",
-      functionName: "profile",
-      fileName: "Query.js",
+      message: "update a profile",
+      functionName: "updateProfile",
+      fileName: "Mutation.js",
       moduleName: "profiles",
       typeDataResponse: {},
     });
@@ -34,5 +32,5 @@ async function profile(parent, args, context, info) {
 }
 
 module.exports = {
-  profile,
+  updateProfile,
 };

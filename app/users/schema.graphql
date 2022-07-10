@@ -1,11 +1,11 @@
 type User {
-  id: ID!
-  email: String!
-  role: String!
+  id: ID
+  email: String
+  role: String
   profile: Profile
   userDeviceId: String
-  createdAt: String!
-  updatedAt: String!
+  createdAt: String
+  updatedAt: String
 }
 
 type Query {

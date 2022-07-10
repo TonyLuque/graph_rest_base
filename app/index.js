@@ -25,6 +25,7 @@ app.use("/user", auth);
 const userQuery = require("./users/Query");
 const userMutation = require("./users/Mutation");
 const profileQuery = require("./profiles/Query");
+const profileMutation = require("./profiles/Mutation");
 
 const User = require("./users/User");
 
@@ -36,6 +37,7 @@ const resolvers = {
 
   Mutation: {
     ...userMutation,
+    ...profileMutation,
   },
   User,
 

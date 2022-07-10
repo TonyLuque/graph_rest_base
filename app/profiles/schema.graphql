@@ -1,13 +1,34 @@
 type Profile {
-  id: ID!
+  id: ID
   nickname: String
   birthday: String
   firstName: String
-  lastname: String
-  createdAt: String!
-  updatedAt: String!
+  lastName: String
+  countryCode: String
+  phoneNumber: String
+  createdAt: String
+  updatedAt: String
 }
 
 type Query {
-  profile: Profile
+  profile(id: ID!): ProfileResponse
+}
+
+type Mutation {
+  updateProfile(
+    id: ID!
+    nickname: String
+    birthday: String
+    firstName: String
+    lastName: String
+    countryCode: String
+    phoneNumber: String
+  ): ProfileResponse
+}
+
+type ProfileResponse implements GeneralResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  data: Profile!
 }

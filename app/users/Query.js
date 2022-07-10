@@ -2,14 +2,14 @@ const User = require("./model");
 const ErrorHandler = require("../utils/ErrorHandler");
 
 async function user(parent, args, context, info) {
-  const { user } = context;
   try {
-    const user = await User.get({ _id: args.id });
+    const { id: userId } = args;
+    const user = await User.get({ _id: userId });
     if (user) {
       return {
         code: 200,
         success: true,
-        message: ``,
+        message: `ok`,
         data: user,
       };
     } else {
@@ -34,14 +34,12 @@ async function user(parent, args, context, info) {
 
 async function users(parent, args, context, info) {
   try {
-    const { user } = context;
-
     const users = await User.getAll({});
     if (users) {
       return {
         code: 200,
         success: true,
-        message: ``,
+        message: `ok`,
         data: users,
       };
     } else {

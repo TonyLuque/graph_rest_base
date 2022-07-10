@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema(
   {
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true },
     password: { type: String, required: true },
     role: { type: String, enum: ["ADMIN", "USER"], default: "USER" },
     profile: { type: mongoose.Types.ObjectId, ref: "Profile" },
     userDeviceId: { type: String, default: null },
+    deleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
@@ -21,9 +22,9 @@ UserSchema.static({
       throw new Error(error.message);
     }
   },
-  get: async function (id) {
+  get: async function (query) {
     try {
-      return await this.findById(id, { password: 0 });
+      return await this.findOne({ ...query, deleted: false }, { password: 0 });
     } catch (error) {
       console.error("Error model get |", error);
       throw new Error(error.message);
@@ -31,7 +32,7 @@ UserSchema.static({
   },
   getAll: async function (query) {
     try {
-      return await this.find(query, { password: 0 });
+      return await this.find({ ...query, deleted: false }, { password: 0 });
     } catch (error) {
       console.error("Error model getAll |", error);
       throw new Error(error.message);

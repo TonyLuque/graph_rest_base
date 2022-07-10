@@ -19,6 +19,10 @@ router.post("/signup", async function (req, res) {
   try {
     const { email, password } = req.body;
 
+    const emailAlreadyExist = await User.get({ email: email });
+
+    if (emailAlreadyExist) throw new Error("Email already in use");
+
     const newProfile = await Profile.create({});
 
     if (!newProfile) throw new Error("Error to create profile");
