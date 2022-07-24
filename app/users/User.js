@@ -1,7 +1,7 @@
-const Profile = require("./model");
+const Profile = require("../profiles/model");
 
 async function profile(parent, args, context) {
-  return await Profile.findById(parent.id);
+  return await Profile.findById(parent.profile);
 }
 
 module.exports = {
